@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/modify">
+        <item android:id="@+id/lOption"
+            android:title="@string/language_option"
+            android:icon="@mipmap/loption"/>
+        <item android:id="@+id/about"
+            android:title="@string/about"
+            android:icon="@mipmap/about"/>
+    </group>
+</menu>

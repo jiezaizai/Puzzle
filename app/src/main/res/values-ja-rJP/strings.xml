@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">パズル</string>
+    <string name="start">ゲームを開始する</string>
+    <string name="language_option">言語設定</string>
+    <string name="about">について</string>
+    <string name="en">English</string>
+    <string name="zh">简体中文</string>
+    <string name="ja">日本語</string>
+    <string name="go_on">ゲームを続ける</string>
+    <string name="look">ランキングを見る</string>
+    <string name="quit">ゲームを終了する</string>
+    <string name="refresh">リフレッシュ</string>
+    <string name="back">戻る</string>
+    <string name="rank">ランキング</string>
+    <string name="user_name">ユーザー名</string>
+    <string name="score">時間</string>
+    <string name="list">リーダーボード</string>
+    <string name="refresh_success">正常に更新</string>
+    <string name="empty">データなし</string>
+    <string name="about_1">著者... Gao Jie</string>
+    <string name="about_2">バージョン... 1.0.0</string>
+    <string name="about_3">日付... 2019/8/30</string>
+    <string name="grade_of_difficult">現在の難易度:</string>
+    <string name="game_time">ゲーム時間:</string>
+    <string name="pause">ゲームの一時停止</string>
+    <string name="increase">難度を上げる</string>
+    <string name="decrease">難度を下げる</string>
+    <string name="cancel">キャンセルする</string>
+    <string name="confirm">決定する</string>
+    <string name="player_name">プレイヤー名</string>
+    <string name="remind">プロンプト</string>
+    <string name="leave_info">ゲームを終了してもよろしいですか？？</string>
+    <string name="start_info">新しいゲームを開始しますか？？</string>
+    <string name="quit_directly">直接出る</string>
+    <string name="quit_save">出口を保存</string>
+    <string name="success">成功したクリアランス！</string>
+    <string name="restart">やり直す</string>
+    <string name="save_success">正常に保存されました!</string>
+    <string name="paused">ゲームが中断されました！</string>
+    <string name="save_game">ゲームを保存する</string>
+    <string name="already_the_most_level">すでに最高レベル</string>
+    <string name="already_the_less_level">すでに最低レベル</string>
+</resources>

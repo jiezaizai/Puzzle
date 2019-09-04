@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Puzzle</string>
+    <string name="start">start game</string>
+    <string name="language_option">language preference</string>
+    <string name="about">about</string>
+    <string name="en">English</string>
+    <string name="zh">简体中文</string>
+    <string name="ja">日本語</string>
+    <string name="go_on">Continue the game</string>
+    <string name="look">View ranking</string>
+    <string name="quit">exit the game</string>
+    <string name="refresh">Refresh</string>
+    <string name="back">return</string>
+    <string name="rank">Ranking</string>
+    <string name="user_name">username</string>
+    <string name="score">time</string>
+    <string name="list">Leaderboard</string>
+    <string name="refresh_success">Refresh successfully</string>
+    <string name="empty">no data</string>
+    <string name="about_1">Author... Gao Jie</string>
+    <string name="about_2">Version...1.0.0</string>
+    <string name="about_3">Date...2019/8/30</string>
+    <string name="grade_of_difficult">Difficulty:</string>
+    <string name="game_time">game time:</string>
+    <string name="pause">Game pause</string>
+    <string name="increase">Increase difficulty</string>
+    <string name="decrease">Reduce difficulty</string>
+    <string name="cancel">cancel</string>
+    <string name="confirm">determine</string>
+    <string name="player_name">Player name</string>
+    <string name="remind">prompt</string>
+    <string name="leave_info">Are you sure to leave the game?？</string>
+    <string name="start_info">Are you sure you start a new game?？</string>
+    <string name="quit_directly">Exit directly</string>
+    <string name="quit_save">Save exit</string>
+    <string name="success">Successful clearance！</string>
+    <string name="restart">Restart</string>
+    <string name="save_success">Successfully saved!</string>
+    <string name="paused">Game has been suspended！</string>
+    <string name="save_game">Save the game</string>
+    <string name="already_the_most_level">Already the highest level</string>
+    <string name="already_the_less_level">Already the lowest level</string>
+</resources>

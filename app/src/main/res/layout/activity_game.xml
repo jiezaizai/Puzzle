@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.GameActivity"
+    android:background="@drawable/background_game">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_alignParentTop="true"
+        android:id="@+id/myToolbarg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null">
+
+        <TextView
+            android:id="@+id/back_tvg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/dp_10"
+            android:text="@string/back"
+            android:textColor="@android:color/white" />
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/id_level_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:layout_below="@+id/myToolbarg"
+        android:layout_margin="@dimen/dp_3">
+
+        <TextView
+            android:id="@+id/tv_difficult"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="@dimen/dp_4"
+            android:text="@string/grade_of_difficult"
+            android:textSize="@dimen/sp_20"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/id_level"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:background="@drawable/textbg"
+            android:gravity="center"
+            android:padding="@dimen/dp_4"
+            android:textColor="#EA7821"
+            android:textSize="@dimen/sp_18"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="right|center"
+            android:padding="@dimen/dp_4"
+            android:text="@string/game_time"
+            android:textSize="@dimen/sp_20"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/id_time"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:background="@drawable/textbg"
+            android:gravity="center"
+            android:padding="@dimen/dp_4"
+            android:textColor="#EA7821"
+            android:textSize="@dimen/sp_18"
+            android:textStyle="bold"
+            android:text="0"/>
+    </LinearLayout>
+    <com.example.gj.puzzle.ui.GamePintuLayout
+        android:layout_marginTop="@dimen/dp_10"
+        android:id="@+id/id_game_pintu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/id_level_time"
+        android:background="#ffffff"/>
+    <LinearLayout
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_game_pintu"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/dp_20">
+
+        <ImageView
+            android:id="@+id/ivSrcImg"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btnstart"
+                    android:layout_weight="1"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="@string/start" />
+
+                <Button
+                    android:id="@+id/btnpause"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/pause"
+                    android:layout_marginLeft="@dimen/dp_10"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnAddLevel"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="@string/increase" />
+
+                <Button
+                    android:id="@+id/btnReduceLevel"
+                    android:layout_weight="1"
+                    android:layout_width="@dimen/zero_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="@string/decrease" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

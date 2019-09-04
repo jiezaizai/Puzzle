@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+<TableLayout
+    android:layout_marginTop="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#e6dbc8">
+    <TableRow>
+        <TextView
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/sp_25"/>
+        <TextView
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="wrap_content"
+            android:text="@string/about_1"
+            android:layout_weight="4"
+            android:textSize="@dimen/sp_25"
+            android:textColor="@android:color/holo_red_light"/>
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/sp_25"/>
+        <TextView
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="wrap_content"
+            android:text="@string/about_2"
+            android:layout_weight="4"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="@dimen/sp_25"/>
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/sp_25"/>
+        <TextView
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="@string/about_3"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="@dimen/sp_25"/>
+    </TableRow>
+
+
+
+
+</TableLayout>
+</LinearLayout>
