@@ -8,6 +8,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.gj.puzzle.R;
+import com.example.gj.puzzle.entity.ImageSoures;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +39,15 @@ public class ListViewService extends RemoteViewsService {
 
         @Override
         public void onCreate() {
-            mList.add("一");
-            mList.add("二");
-            mList.add("三");
-            mList.add("四");
-            mList.add("五");
-            mList.add("六");
+            for (int i = 1; i <= ImageSoures.imageSours.length; i++) {
+                mList.add("" + i);
+            }
+//            mList.add("一");
+//            mList.add("二");
+//            mList.add("三");
+//            mList.add("四");
+//            mList.add("五");
+//            mList.add("六");
         }
 
         @Override
@@ -64,14 +68,15 @@ public class ListViewService extends RemoteViewsService {
         @Override
         public RemoteViews getViewAt(int position) {
             RemoteViews views = new RemoteViews(mContext.getPackageName(), android.R.layout.simple_list_item_1);
-            views.setTextViewText(android.R.id.text1, "image:" + mList.get(position));
-            views.setTextColor(android.R.id.text1,mContext.getResources().getColor(R.color.white));
+            views.setTextViewText(android.R.id.text1, "image_" + mList.get(position));
+            views.setTextColor(android.R.id.text1, mContext.getResources().getColor(R.color.white));
             Intent changeIntent = new Intent();
-            changeIntent.putExtra(ListViewService.INITENT_DATA,position);
+            changeIntent.putExtra(ListViewService.INITENT_DATA, position);
             changeIntent.setAction(MyAppWidget.CHANGE_IMAGE);
             views.setOnClickFillInIntent(android.R.id.text1, changeIntent);
             return views;
         }
+
         @Override
         public RemoteViews getLoadingView() {
             return null;
