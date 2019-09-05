@@ -589,7 +589,7 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
             SpUtil.put(context, "column", GamePintuLayout.mColumn);
             SpUtil.put(context, "save", true);
             isGameSuccess = false;
-            canContinuePoint = true;
+            canContinuePoint = false;
             mHandler.removeMessages(TIME_CHANGED);
             setTimeEabled(false);
             // 重新更新时间
@@ -613,7 +613,7 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
             SpUtil.put(context, "column", GamePintuLayout.mColumn);
             SpUtil.put(context, "save", true);
             isGameSuccess = false;
-            canContinuePoint = true;
+            canContinuePoint = false;
             mHandler.removeMessages(TIME_CHANGED);
             setTimeEabled(false);
             // 重新更新时间

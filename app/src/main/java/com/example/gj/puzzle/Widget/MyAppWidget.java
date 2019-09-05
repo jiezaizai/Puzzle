@@ -11,6 +11,7 @@ import android.widget.RemoteViews;
 
 import com.example.gj.puzzle.Activity.MainActivity;
 import com.example.gj.puzzle.R;
+import com.example.gj.puzzle.entity.ImageSoures;
 
 /**
  * Implementation of App Widget functionality.
@@ -21,14 +22,7 @@ public class MyAppWidget extends AppWidgetProvider {
     private RemoteViews mRemoteViews;
     private ComponentName mComponentName;
 
-    private int[] imgs = new int[]{
-            R.drawable.image1,
-            R.drawable.image2,
-            R.drawable.image3,
-            R.drawable.image4,
-            R.drawable.image5,
-            R.drawable.image6,
-    };
+    private int[] imgs = ImageSoures.imageSours;
 
 
     @Override
