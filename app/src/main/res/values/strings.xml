@@ -41,5 +41,6 @@
     <string name="save_game">保存游戏</string>
     <string name="already_the_most_level">已经是最高等级</string>
     <string name="already_the_less_level">已经是最低等级</string>
+    <string name="no_name">请输入用户名</string>
 
 </resources>

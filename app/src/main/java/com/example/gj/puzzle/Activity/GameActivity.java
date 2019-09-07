@@ -28,6 +28,8 @@ import com.example.gj.puzzle.dialog.SelectImageDialog;
 import com.example.gj.puzzle.entity.ImageSoures;
 import com.example.gj.puzzle.ui.GamePintuLayout;
 
+import java.lang.reflect.GenericArrayType;
+
 /**
  * Created by gj
  * Created on 8/29/19
@@ -36,7 +38,9 @@ import com.example.gj.puzzle.ui.GamePintuLayout;
 
 public class GameActivity extends BaseActivity {
     private ContentResolver contentResolver;
+    //标示着activity的暂停
     private boolean status = true;
+    //拼图的布局
     private GamePintuLayout mGamePintuLayout;
     private TextView mLevel;
     private TextView mTime;
@@ -48,7 +52,7 @@ public class GameActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        SpUtil.put(GameActivity.this,"save",true);
+        SpUtil.put(GameActivity.this, "save", true);
         contentResolver = this.getContentResolver();
         Toolbar toolbar = findViewById(R.id.myToolbarg);
         toolbar.setTitle(getResources().getString(R.string.app_name));
@@ -58,7 +62,7 @@ public class GameActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 
-                status=false;
+                status = false;
                 mGamePintuLayout.pause();
                 new AlertDialog.Builder(GameActivity.this)
                         .setTitle(getResources().getString(R.string.remind))
@@ -76,7 +80,8 @@ public class GameActivity extends BaseActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
-                                SpUtil.put(GameActivity.this,"save",true);
+                                //添加一个缓存存在的标示
+                                SpUtil.put(GameActivity.this, "save", true);
                                 GameActivity.this.finish();
                             }
                         })
@@ -88,11 +93,11 @@ public class GameActivity extends BaseActivity {
         });
         mTime = findViewById(R.id.id_time);
         if ((Integer) (SpUtil.get(GameActivity.this, "time", 0)) > 0) {
-            int i= (Integer) SpUtil.get(GameActivity.this, "time", 0);
-            mTime.setText(""+i);
+            int i = (Integer) SpUtil.get(GameActivity.this, "time", 0);
+            mTime.setText("" + i);
         }
         mLevel = findViewById(R.id.id_level);
-        mLevel.setText(""+(GamePintuLayout.mColumn-2));
+        mLevel.setText("" + (GamePintuLayout.mColumn - 2));
         imageView = findViewById(R.id.ivSrcImg);
         imageView.setImageBitmap(ImageSplitterUtil.readBitmap(getApplicationContext(), ImageSoures.imageSours[GamePintuLayout.PICTURENUM], 4));
         btnstart = findViewById(R.id.btnstart);
@@ -103,6 +108,7 @@ public class GameActivity extends BaseActivity {
         mGamePintuLayout = findViewById(R.id.id_game_pintu);
         mGamePintuLayout.setTimeEabled(false);
         mGamePintuLayout.setcanContinuePoint(false);
+        //实现自定义view里的接口。
         mGamePintuLayout.setOnGamePintuListener(new GamePintuLayout.GamePintuListener() {
             @Override
             public void timeChanged(int currentTime) {
@@ -113,59 +119,71 @@ public class GameActivity extends BaseActivity {
             public void gamesuccess() {
                 LinearLayout playername = (LinearLayout) GameActivity.this.getLayoutInflater()
                         .inflate(R.layout.add_player, null);
-                final EditText pname = playername.findViewById(R.id.pname);
-                assert pname != null;
-                new AlertDialog.Builder(GameActivity.this)
-                        .setView(playername)
+                final EditText pname = playername.findViewById(R.id.r_pname);
+                pname.setText("");
+                //assert pname != null;
+                /**
+                 * 把数据通过provider插入到另一个APP的数据库里
+                 */
+                AlertDialog.Builder builder=new AlertDialog.Builder(GameActivity.this);
+                builder .setView(playername)
                         .setTitle(getResources().getString(R.string.remind)).setMessage(getResources().getString(R.string.success))
-                        .setIcon(R.drawable.info)
-                       /* .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        .setIcon(R.drawable.info);
+                builder.setPositiveButton(getResources().getString(R.string.quit_save), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+                builder.setNegativeButton(getResources().getString(R.string.restart), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+                final AlertDialog dialog = builder.create();
+                dialog.setCancelable(false);
+                dialog.show();
+                //重写“确定”，截取监听
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (pname.getText().toString() == null || pname.getText().toString().trim().equals("")) {
+                                    Toast.makeText(GameActivity.this, getResources().getString(R.string.no_name), Toast.LENGTH_SHORT).show();
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.e("gj",mTime.getText().toString().trim());
-                                //mGamePintuLayout.nextLevel();
-                                mLevel.setText("" + nextLevel);
-                            }
-                        })
-                }).create().show();*/
-                        .setPositiveButton(getResources().getString(R.string.quit_save), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                int score = 0;
-                                ContentValues contentValues = new ContentValues();
-                                contentValues.put("name", pname.getText().toString());
-                                contentValues.put("score", mTime.getText().toString());
-                                Cursor cursor = contentResolver.query(Uri.parse("content://org.gj.providers.playerProvider/players"), new String[]{"id", "name", "score"}, "name = ?", new String[]{pname.getText().toString()}, null);
-                                if (cursor.getCount() > 0) {
-                                    while (cursor.moveToNext()) {
-                                        score = cursor.getInt(2);
-                                    }
-                                    if (Integer.parseInt(mTime.getText().toString().trim()) <= score) {
-                                        contentResolver.update(Uri.parse("content://org.gj.providers.playerProvider/players"), contentValues, "name = ?", new String[]{pname.getText().toString()});
-                                    }
                                 } else {
-                                    contentResolver.insert(
-                                            Uri.parse("content://org.gj.providers.playerProvider/players"), contentValues
-                                    );
+                                    int score = 0;
+                                    ContentValues contentValues = new ContentValues();
+                                    contentValues.put("name", pname.getText().toString());
+                                    contentValues.put("score", mTime.getText().toString());
+                                    Cursor cursor = contentResolver.query(Uri.parse("content://org.gj.providers.playerProvider/players"), new String[]{"id", "name", "score"}, "name = ?", new String[]{pname.getText().toString()}, null);
+                                    if (cursor.getCount() > 0) {
+                                        while (cursor.moveToNext()) {
+                                            score = cursor.getInt(2);
+                                        }
+                                        if (Integer.parseInt(mTime.getText().toString().trim()) <= score) {
+                                            contentResolver.update(Uri.parse("content://org.gj.providers.playerProvider/players"), contentValues, "name = ?", new String[]{pname.getText().toString()});
+                                        }
+                                    } else {
+                                        contentResolver.insert(
+                                                Uri.parse("content://org.gj.providers.playerProvider/players"), contentValues
+                                        );
+                                    }
+                                    Toast.makeText(GameActivity.this, getResources().getString(R.string.save_success), Toast.LENGTH_SHORT).show();
+                                    status = false;
+                                    dialog.dismiss();
+                                    SpUtil.clear(GameActivity.this);
+                                    GameActivity.this.finish();
                                 }
-                                Toast.makeText(GameActivity.this, getResources().getString(R.string.save_success), Toast.LENGTH_SHORT).show();
-                                status=false;
-                                SpUtil.clear(GameActivity.this);
-                                GameActivity.this.finish();
-                            }
-                        })
-                        .setNegativeButton(getResources().getString(R.string.restart), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                SpUtil.clear(GameActivity.this);
+                    }
+                });
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SpUtil.clear(GameActivity.this);
                                 //mGamePintuLayout.reStart();
                                 GameActivity.this.recreate();
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setCancelable(false)
-                        .create().show();
+                                dialog.dismiss();
+                    }
+                });
             }
 
         });
@@ -193,8 +211,8 @@ public class GameActivity extends BaseActivity {
             public void onClick(View v) {
                 mTime.setText("0");
                 SpUtil.clear(GameActivity.this);
-                int i=mGamePintuLayout.nextLevel();
-                mLevel.setText(""+(i-2));
+                int i = mGamePintuLayout.nextLevel();
+                mLevel.setText("" + (i - 2));
             }
         });
         btnReduceLevel.setOnClickListener(new View.OnClickListener() {
@@ -202,8 +220,8 @@ public class GameActivity extends BaseActivity {
             public void onClick(View v) {
                 mTime.setText("0");
                 SpUtil.clear(GameActivity.this);
-                int i=mGamePintuLayout.lastLevel();
-                mLevel.setText(""+(i-2));
+                int i = mGamePintuLayout.lastLevel();
+                mLevel.setText("" + (i - 2));
             }
         });
         if (selectImageDialog == null) {
@@ -212,9 +230,9 @@ public class GameActivity extends BaseActivity {
                 @Override
                 public void itemClick(int postion, int res) {
                     //更新布局
-                    status=false;
+                    status = false;
                     GamePintuLayout.PICTURENUM = postion;
-                    SpUtil.put(GameActivity.this,"time",0);
+                    SpUtil.put(GameActivity.this, "time", 0);
                     //mGamePintuLayout.reStart();
 
                     GameActivity.this.recreate();
@@ -233,6 +251,9 @@ public class GameActivity extends BaseActivity {
 
     }
 
+    /**
+     * 这个方法是游戏在暂停时创建一个弹出框。
+     */
     public void play_onPause() {
         mGamePintuLayout.pause();
         status = false;
@@ -252,7 +273,7 @@ public class GameActivity extends BaseActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
-                        SpUtil.put(GameActivity.this,"save",true);
+                        SpUtil.put(GameActivity.this, "save", true);
                         GameActivity.this.finish();
                     }
                 })
@@ -268,7 +289,7 @@ public class GameActivity extends BaseActivity {
         if (status) {
             play_onPause();
         }
-        SpUtil.put(GameActivity.this,"image",GamePintuLayout.PICTURENUM);
+        SpUtil.put(GameActivity.this, "image", GamePintuLayout.PICTURENUM);
 //        SpUtil.put(GameActivity.this,"column",GamePintuLayout.mColumn);
     }
 
@@ -281,9 +302,10 @@ public class GameActivity extends BaseActivity {
             GameActivity.this.onPause();
         }
     }
+
     @Override
     public void onBackPressed() {
-        status=false;
+        status = false;
         mGamePintuLayout.pause();
         new AlertDialog.Builder(GameActivity.this)
                 .setTitle(getResources().getString(R.string.remind))
@@ -301,7 +323,7 @@ public class GameActivity extends BaseActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
-                        SpUtil.put(GameActivity.this,"save",true);
+                        SpUtil.put(GameActivity.this, "save", true);
                         GameActivity.this.finish();
                     }
                 })

@@ -29,7 +29,9 @@ public class ImageSplitterUtil {
 
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-
+        /**
+         * 根据这个切割方法，放入的图片最好选择正方形。
+         */
         int pieceWidth = Math.min(width, height)/piece;
 
         for(int i = 0; i < piece ; i++) {

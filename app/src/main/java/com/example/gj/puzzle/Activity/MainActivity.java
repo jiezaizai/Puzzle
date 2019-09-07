@@ -52,6 +52,9 @@ public class MainActivity extends BaseActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                GamePintuLayout.mColumn=3;
                                GamePintuLayout.PICTURENUM=0;
+                                /**
+                                 * 开始新游戏前把所以缓存都清理掉
+                                 */
                                 SpUtil.clear(MainActivity.this);
                                 Intent intent = new Intent(MainActivity.this, GameActivity.class);
                                 startActivityForResult(intent, 0);
@@ -76,6 +79,7 @@ public class MainActivity extends BaseActivity {
         button2.setOnClickListener(new View.OnClickListener() {
                                        @Override
                                        public void onClick(View v) {
+                                           //按照缓存来读取其中的图片和切割行数。
                                            GamePintuLayout.mColumn =(Integer) SpUtil.get(MainActivity.this, "column",3);
                                            GamePintuLayout.PICTURENUM=(Integer) SpUtil.get(MainActivity.this, "image",0);
                                                Intent intent = new Intent(MainActivity.this, GameActivity.class);
@@ -133,8 +137,7 @@ public class MainActivity extends BaseActivity {
                                            button2.setEnabled(true);
                                        }
                                    }
-
-                //这个方法改变了menu的setOptionalIconsVisible的返回值，这样可以让菜单显示图标和文字
+    //这个方法改变了menu的setOptionalIconsVisible的返回值，这样可以让菜单显示图标和文字
         @Override
         public boolean onMenuOpened ( int featureId, Menu menu){
             if (menu != null) {
@@ -220,13 +223,14 @@ public class MainActivity extends BaseActivity {
         @Override
         protected void onActivityResult ( int requestCode, int resultCode, Intent data){
             super.onActivityResult(requestCode, resultCode, data);
-            boolean i=(Boolean) SpUtil.get(this,"save",false);
+            //boolean i=(Boolean) SpUtil.get(this,"save",false);
             if (!(Boolean) SpUtil.get(this, "save", false)||SpUtil.get(this,"save",false)==null) {
                 button2.setEnabled(false);
             } else {
                 button2.setEnabled(true);
             }
         }
+        //重写返回键监听事件
         @Override
         public void onBackPressed () {
             new AlertDialog.Builder(MainActivity.this)

@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:text="@string/player_name"
         />
-    <EditText android:id="@+id/pname"
+    <EditText android:id="@+id/r_pname"
         android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"/>

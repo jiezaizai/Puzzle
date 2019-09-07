@@ -11,6 +11,9 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.example.gj.puzzle.entity.System_Languate;
+
+import java.util.HashMap;
 import java.util.Locale;
 
 /**
@@ -20,96 +23,103 @@ import java.util.Locale;
  */
 
 public class Language_util {
-    public static void setLanAtr(String language,Context context){
+
+    private static HashMap<String, Locale> mAllLanguages = new HashMap<String, Locale>(7) {{
+        put(System_Languate.ENGLISH, Locale.ENGLISH);
+        put(System_Languate.SIMPLIFIED_CHINESE, Locale.SIMPLIFIED_CHINESE);
+        put(System_Languate.JAPANESE, Locale.JAPANESE);
+    }};
+
+    public static void setLanAtr(String language, Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("setting_share", 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("language",language);
+        editor.putString("language", language);
         editor.commit();
     }
-    public static String getLanAtr(Context context){
+
+    public static String getLanAtr(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("setting_share", 0);
         String lanAtr = sharedPreferences.getString("language", "zh");
-        return  lanAtr;
+        return lanAtr;
     }
-    public static Context initAppLanguage(Context context, String language) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            //7.0及以上的方法
-            return createConfiguration(context, language);
-        } else {
-            updateConfiguration(context, language);
-            return context;
-        }
-    }
-//    private static boolean isSupportLanguage(String language) {
-//        return mAllLanguages.containsKey(language);
+    //    public static Context initAppLanguage(Context context, String language) {
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            //7.0及以上的方法
+//            return createConfiguration(context, language);
+//        } else {
+//            updateConfiguration(context, language);
+//            return context;
+//        }
 //    }
-
-    /**
-     * 7.0及以上的修改app语言的方法
-     *
-     * @param context  context
-     * @param language language
-     * @return context
-     */
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private static Context createConfiguration(Context context, String language) {
+//
+//    /**
+//     * 7.0以下的修改app语言的方法
+//     *
+//     * @param context  context
+//     * @param language language
+//     */
+//
+//    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+//    private static void updateConfiguration(Context context, String language) {
+//        Resources resources = context.getResources();
+//        Locale locale = new Locale(language);
+//        Configuration configuration = resources.getConfiguration();
+//        configuration.setLocale(locale);
+//        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+//        resources.updateConfiguration(configuration, displayMetrics);
+//    }
+    public static Context initAppLanguage(Context context, String newLanguage) {
         Resources resources = context.getResources();
-        Locale locale = new Locale(language);
         Configuration configuration = resources.getConfiguration();
-        configuration.setLocale(locale);
-        LocaleList localeList = new LocaleList(locale);
-        LocaleList.setDefault(localeList);
-        configuration.setLocales(localeList);
-        return context.createConfigurationContext(configuration);
-    }
 
+        // app locale
+        Locale locale = getLocaleByLanguage(newLanguage);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            configuration.setLocale(locale);
+            DisplayMetrics dm = resources.getDisplayMetrics();
+            resources.updateConfiguration(configuration, dm);
+            return context.createConfigurationContext(configuration);
+
+        } else {
+            configuration.locale = locale;
+
+        }
+        // updateConfiguration
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        resources.updateConfiguration(configuration, dm);
+        return context;
+
+    }
     /**
-     * 7.0以下的修改app语言的方法
+     * 获取指定语言的locale信息，如果指定语言不存在{@link #mAllLanguages}，返回本机语言，如果本机语言不是语言集合中的一种{@link #mAllLanguages}，返回英语
      *
-     * @param context  context
      * @param language language
+     * @return
      */
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private static void updateConfiguration(Context context, String language) {
-        Resources resources = context.getResources();
-        Locale locale = new Locale(language);
-        Configuration configuration = resources.getConfiguration();
-        configuration.setLocale(locale);
-        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
-        resources.updateConfiguration(configuration, displayMetrics);
+    public static Locale getLocaleByLanguage(String language) {
+        if (isSupportLanguage(language)) {
+            return mAllLanguages.get(language);
+        } else {
+            Locale locale = Locale.getDefault();
+            for (String key : mAllLanguages.keySet()) {
+                if (TextUtils.equals(mAllLanguages.get(key).getLanguage(), locale.getLanguage())) {
+                    return locale;
+                }
+            }
+        }
+        return Locale.ENGLISH;
     }
 
     /**
-     * 判断当前的语言是否是简体中文
-     *
-     * @param context context
-     * @return boolean
+     * java.util.HashMap.containsKey()方法用于检查特定键是否被映射到HashMap。它将key元素作为参数，如果该元素在map中映射，则返回True。
+     * @param language
+     * @return
      */
-    private static boolean currentLanguageIsSimpleChinese(Context context) {
-        String language;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            language = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
-        } else {
-            language = context.getResources().getConfiguration().locale.getLanguage();
-        }
-        return TextUtils.equals("zh", language);
+    private static boolean isSupportLanguage(String language) {
+        return mAllLanguages.containsKey(language);
     }
 
-    /**
-     * 获取当前的语言
-     *
-     * @param context context
-     * @return boolean
-     */
-    public static String getCurrentLanguage(Context context) {
-        String language;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            language = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
-        } else {
-            language = context.getResources().getConfiguration().locale.getLanguage();
-        }
-        return language;
-    }
 }

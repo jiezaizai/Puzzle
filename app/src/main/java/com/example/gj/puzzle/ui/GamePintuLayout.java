@@ -38,30 +38,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * 自定义的RelateLayout
- *
- * @author luo
- *         <p>
- *         <p>
- *         使用TranslateAnimation 进行动画图片的交换 会实现动画效果 但是表面上图片是进行了交换但是实际上原来的位置还是原来的图片
- *         只是换了显示位置而已 是让用户产生的错觉 实际上是没有改变的 所以此处要在交换之后将交换后的图片删除显示实际交换的图片：
- *         复制两张和交换的图片一样的图片 然后用复制的图片进行动画演示 演示之后将实际的图片进行交换显示
- *         <p>
- *         过关之后通过接口进行回调将主页面重置
- */
 @SuppressLint("HandlerLeak")
 public class GamePintuLayout extends RelativeLayout implements View.OnClickListener {
 
     /**
-     * 拼图图片资源
+     * 拼图图片资源来源于ImageSoures类。
      */
-//    private int[] imageIds = {
-//            R.drawable.image1, R.drawable.image2, R.drawable.image3,
-//            R.drawable.image4, R.drawable.image5, R.drawable.image6,
-//            R.drawable.image6, R.drawable.image5, R.drawable.image4,
-//            R.drawable.image3, R.drawable.image2, R.drawable.image1};
-
+    //表示拼图的行数
     public static int mColumn = 3;    // 最开始默认为是3x3
     /**
      * 容器的内边距
@@ -69,8 +52,6 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
     private int mPadding;
     /**
      * 每张小图之间的距离 dp
-     *
-     * @param context
      */
     private int mMargin = 3;
     public static int PICTURENUM = 0;
@@ -92,10 +73,7 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
     private List<ImagePiece> mItemsBitmaps;
     private String[] tags;
     private boolean once;
-
     private boolean isGameSuccess;
-
-
     private boolean isPause;
 
     // 可以继续点击
@@ -104,8 +82,6 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
 
     /**
      * 回调的接口
-     *
-     * @author luo
      */
     public interface GamePintuListener {
         void gamesuccess();
@@ -113,8 +89,6 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
         void timeChanged(int currentTime);
 
     }
-
-    // 需要与Activity进行交互而且基本上都是UI的操作所以使用handler
 
     public GamePintuListener mListener;
 
@@ -125,9 +99,8 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
         this.mListener = mListener;
     }
 
-    public int level = 1;
-    private static final int TIME_CHANGED = 1223;
-    private static final int NEXT_LEVEL = 0127;
+    private static final int TIME_CHANGED = 01;
+    private static final int NEXT_LEVEL = 11;
 
     private Handler mHandler = new Handler() {
 
@@ -174,6 +147,10 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
         this.isTimeEabled = isTimeEabled;
     }
 
+    /**
+     * 设置是否可以移动拼图
+     * @param canContinuePoint
+     */
     public void setcanContinuePoint(boolean canContinuePoint) {
         this.canContinuePoint = canContinuePoint;
     }
@@ -193,6 +170,11 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
         init();
     }
 
+    /**
+     * TypedValue.applyDimension()方法的功能就是把非标准尺寸转换成标准尺寸, 如:
+     * dp->px:  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, context.getResources().getDisplayMetrics());
+     * 中间的数字参数就是所转换的值
+     */
     private void init() {
         // 将dp 装换成px
         mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
@@ -210,14 +192,14 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         // 取宽和高的最小值作为容器的宽高度
         mWidth = context.getResources().getDisplayMetrics().widthPixels;
-
+        //绘制图形只能执行一次
         if (!once) {
             // 进行切图, 以及排序
             initBitmap();
             // 设置ImageView(Item)的宽高等属性
             initItem();
             // 判断是否开启时间
-            checkTimeEnable();
+           // checkTimeEnable();
 
             once = true;
         }
@@ -232,9 +214,7 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
 
     private void checkTimeEnable() {
         if (isTimeEabled) {
-            // 根据当前灯等级设置时间
-            //countTimeBaseLevel();
-            if ((Integer) (SpUtil.get(context, "time", 0)) == null) {
+            if ((Integer) (SpUtil.get(context, "time", 0)) == 0) {
                 mTime = 1;
             } else {
                 mTime = (Integer) SpUtil.get(context, "time", 0);
@@ -243,13 +223,6 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
             mHandler.sendEmptyMessage(TIME_CHANGED);
         }
     }
-
-    /**
-     * 根据当前等级设置过关时间
-     */
-   /* private void countTimeBaseLevel() {
-        mTime = (int) (Math.pow(2, level) * 25);
-    }*/
 
     /**
      * 进行切图, 以及排序
@@ -301,7 +274,6 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
 
             // 为每一个Item设置向对象的ID方便后面对每个Item使用Id进行排版
             item.setId(i + 1);
-
             // 在Item的tag中存储了index index里面的数字是过关时图片应有的index
             if (tags[i] == null || tags[i].equals("")) {
                 item.setTag(i + "_" + mItemsBitmaps.get(i).getIndex());
@@ -311,6 +283,7 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
             }
             SpUtil.putStringArray(context, "tag", tags);
             Log.d("gj", "initItem: " + tags[i]);
+            //LayoutParams继承于Android.View.ViewGroup.LayoutParams，相当于一个Layout的信息包，它封装了Layout的位置、高、宽等信息。
             LayoutParams lp1 = new LayoutParams(
                     mItemWidth, mItemWidth);
             // 设置Item间横向间隙，通过rightMargin
@@ -365,6 +338,7 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        //动画中或者设置不能被点击时点击无事件.
         if (isAniming || !canContinuePoint) {
             return;
         }
@@ -512,10 +486,6 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
             isGameSuccess = true;
             // 删掉上一关卡的handler消息 防止进入下一关的时候接收到消息的频率变快 时间变快
             mHandler.removeMessages(NEXT_LEVEL);
-            /*
-             * Toast.makeText(getContext(), "恭喜您,成功晋级 ！！！", Toast.LENGTH_LONG)
-			 * .show();
-			 */
             // handler发送消息 然后回调 使得页面重置
             mHandler.sendEmptyMessage(NEXT_LEVEL);
         }
@@ -532,24 +502,21 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
     }
 
     /**
-     * 通过Tag获得该区域上的图片
+     * 返回tag_前面的值
      */
     public int getImageIdByTag(String tag) {
         String[] parms = tag.split("_");
         return Integer.parseInt(parms[0]);
     }
 
+    /**
+     * 返回tag_后面的值
+     * @param tag
+     * @return
+     */
     public int getImageIndex(String tag) {
         String[] parms = tag.split("_");
         return Integer.parseInt(parms[1]);
-    }
-
-    /**
-     * 时间到了重玩当前关卡
-     */
-    public void reStart() {
-        mColumn--;
-        nextLevel();
     }
 
     /**

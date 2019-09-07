@@ -22,6 +22,12 @@ import java.util.List;
 public class ListViewService extends RemoteViewsService {
     public static final String INITENT_DATA = "extra_data";
 
+    /**
+     * 重写这个方法，会返回一个RemoteViewsFactory对象
+     * 它负责为RemoteView中的指定组件提供多个列表项
+     * @param intent
+     * @return
+     */
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new ListRemoteViewsFactory(this.getApplicationContext(), intent);
@@ -39,15 +45,10 @@ public class ListViewService extends RemoteViewsService {
 
         @Override
         public void onCreate() {
+            //初始化数组
             for (int i = 1; i <= ImageSoures.imageSours.length; i++) {
                 mList.add("" + i);
             }
-//            mList.add("一");
-//            mList.add("二");
-//            mList.add("三");
-//            mList.add("四");
-//            mList.add("五");
-//            mList.add("六");
         }
 
         @Override
@@ -65,11 +66,17 @@ public class ListViewService extends RemoteViewsService {
             return mList.size();
         }
 
+        /**
+         * 这个方法的返回值控制各个位置所显示的RemoteView
+         * @param position
+         * @return
+         */
         @Override
         public RemoteViews getViewAt(int position) {
             RemoteViews views = new RemoteViews(mContext.getPackageName(), android.R.layout.simple_list_item_1);
             views.setTextViewText(android.R.id.text1, "image_" + mList.get(position));
             views.setTextColor(android.R.id.text1, mContext.getResources().getColor(R.color.white));
+           //这个intent用来传送数据
             Intent changeIntent = new Intent();
             changeIntent.putExtra(ListViewService.INITENT_DATA, position);
             changeIntent.setAction(MyAppWidget.CHANGE_IMAGE);

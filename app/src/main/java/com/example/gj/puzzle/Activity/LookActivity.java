@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -63,6 +64,9 @@ public class LookActivity extends BaseActivity{
 
     private void setAdapter() {
         int id=1;
+        /**
+         * 通过provider查询出数据
+         */
         Cursor cursor = contentResolver.query(Uri.parse("content://org.gj.providers.playerProvider/players"), new String[]{"id", "name", "score"},null,null, "score asc");
         List<Map<String, Object>> players = new ArrayList<Map<String, Object>>();
         while (cursor.moveToNext()) {

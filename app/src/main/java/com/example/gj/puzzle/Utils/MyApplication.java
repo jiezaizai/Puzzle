@@ -82,9 +82,9 @@ public class MyApplication extends Application implements Application.ActivityLi
     }
 
     private void initLanguage() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+
             //Application这种方式适用于8.0之前(不包括8.0)的版本
             Language_util.initAppLanguage(getApplicationContext(), Language_util.getLanAtr(getApplicationContext()));
-        }
+
     }
 }

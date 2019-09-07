@@ -15,13 +15,12 @@ import com.example.gj.puzzle.Utils.MyApplication;
 
 public class BaseActivity extends AppCompatActivity{
     @Override
+    /**
+     * 这个方法会在oncreate方法之前执行。
+     */
     protected void attachBaseContext(Context newBase) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            super.attachBaseContext(newBase);
-        } else {
-            //zh：中文
             super.attachBaseContext(Language_util.initAppLanguage(newBase, Language_util.getLanAtr(MyApplication.context)));
-        }
+
     }
 
 }
