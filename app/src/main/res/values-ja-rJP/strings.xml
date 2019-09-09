@@ -14,7 +14,7 @@
     <string name="back">戻る</string>
     <string name="rank">ランキング</string>
     <string name="user_name">ユーザー名</string>
-    <string name="score">時間</string>
+    <string name="score">時間(s)</string>
     <string name="list">リーダーボード</string>
     <string name="refresh_success">正常に更新</string>
     <string name="empty">データなし</string>

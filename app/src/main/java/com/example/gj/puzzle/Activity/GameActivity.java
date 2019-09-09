@@ -154,13 +154,14 @@ public class GameActivity extends BaseActivity {
                                     ContentValues contentValues = new ContentValues();
                                     contentValues.put("name", pname.getText().toString());
                                     contentValues.put("score", mTime.getText().toString());
-                                    Cursor cursor = contentResolver.query(Uri.parse("content://org.gj.providers.playerProvider/players"), new String[]{"id", "name", "score"}, "name = ?", new String[]{pname.getText().toString()}, null);
+                                    contentValues.put("difficulty",mLevel.getText().toString());
+                                    Cursor cursor = contentResolver.query(Uri.parse("content://org.gj.providers.playerProvider/players"), new String[]{"id", "name", "score","difficulty"}, "name = ? and difficulty = ?", new String[]{pname.getText().toString(),mLevel.getText().toString()}, null);
                                     if (cursor.getCount() > 0) {
                                         while (cursor.moveToNext()) {
                                             score = cursor.getInt(2);
                                         }
                                         if (Integer.parseInt(mTime.getText().toString().trim()) <= score) {
-                                            contentResolver.update(Uri.parse("content://org.gj.providers.playerProvider/players"), contentValues, "name = ?", new String[]{pname.getText().toString()});
+                                            contentResolver.update(Uri.parse("content://org.gj.providers.playerProvider/players"), contentValues, "name = ? and difficulty = ?", new String[]{pname.getText().toString(),mLevel.getText().toString()});
                                         }
                                     } else {
                                         contentResolver.insert(

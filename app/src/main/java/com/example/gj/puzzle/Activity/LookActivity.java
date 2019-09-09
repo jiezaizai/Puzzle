@@ -7,6 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.gj.puzzle.Adapter.MyFragmentPagerAdapter;
 import com.example.gj.puzzle.Adapter.MySimpleAdapter;
 import com.example.gj.puzzle.R;
 import com.example.gj.puzzle.Utils.BaseActivity;
@@ -29,27 +34,28 @@ import java.util.Map;
  * Description
  */
 
-public class LookActivity extends BaseActivity{
+public class LookActivity extends BaseActivity {
     private ListView myListView;
     public SQLiteDatabase sqLiteDatabase;
     private ContentResolver contentResolver;
+    private List<String> tabIndicators;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private MyFragmentPagerAdapter myFragmentPagerAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_view);
+        setContentView(R.layout.activity_look);
         contentResolver = this.getContentResolver();
+        viewPager= findViewById(R.id.viewPager);
+        viewPager.setOffscreenPageLimit(0);
+        tabLayout =  findViewById(R.id.tabLayout);
         Toolbar toolbar = findViewById(R.id.myToolbar);
         toolbar.setTitle(getResources().getString(R.string.list));
         toolbar.setTitleTextColor(Color.WHITE);
         this.setSupportActionBar(toolbar);
-        (toolbar.findViewById(R.id.refresh_tv)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LookActivity.this.setAdapter();
-                Toast.makeText(LookActivity.this,getResources().getString(R.string.refresh_success),Toast.LENGTH_SHORT).show();
-            }
-        });
         (toolbar.findViewById(R.id.back_tv)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,38 +64,31 @@ public class LookActivity extends BaseActivity{
                 LookActivity.this.finish();
             }
         });
-        myListView = findViewById(R.id.myList);
-        this.setAdapter();
+//        myListView = findViewById(R.id.myList);
+//        this.setAdapter();
+
+//        myFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
+//        viewPager.setAdapter(myFragmentPagerAdapter);
+//        tabLayout.setupWithViewPager(viewPager);
+
+        initContent();
+        initTab();
+    }
+    private void initTab(){
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setTabTextColors(ContextCompat.getColor(this, R.color.gray), ContextCompat.getColor(this, R.color.white));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.white));
+        ViewCompat.setElevation(tabLayout, 10);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
-    private void setAdapter() {
-        int id=1;
-        /**
-         * 通过provider查询出数据
-         */
-        Cursor cursor = contentResolver.query(Uri.parse("content://org.gj.providers.playerProvider/players"), new String[]{"id", "name", "score"},null,null, "score asc");
-        List<Map<String, Object>> players = new ArrayList<Map<String, Object>>();
-        while (cursor.moveToNext()) {
-            HashMap<String, Object> playerHashMap = new HashMap<String, Object>();
-            playerHashMap.put("id", id);
-            playerHashMap.put("name", cursor.getString(1));
-            playerHashMap.put("score", cursor.getString(2));
-            id++;
-            players.add(playerHashMap);
+    private void initContent(){
+        tabIndicators = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            tabIndicators.add("难度 " + i);
         }
-        cursor.close();
-        if (!players.isEmpty()) {
-            MySimpleAdapter mySimpleAdapter = new MySimpleAdapter(
-                    this,
-                    players,
-                    R.layout.player_list_items,
-                    new String[]{"id","name","score"},
-                    new int[]{R.id.pid,R.id.pname,R.id.pscore}
-            );
-            myListView.setAdapter(mySimpleAdapter);
-        }else{
-            Toast.makeText(LookActivity.this,getResources().getString(R.string.empty),Toast.LENGTH_SHORT).show();
-
-        }
+        myFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(myFragmentPagerAdapter);
     }
+
 }

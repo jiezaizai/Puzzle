@@ -14,7 +14,7 @@
     <string name="back">return</string>
     <string name="rank">Ranking</string>
     <string name="user_name">username</string>
-    <string name="score">time</string>
+    <string name="score">time(s)</string>
     <string name="list">Leaderboard</string>
     <string name="refresh_success">Refresh successfully</string>
     <string name="empty">no data</string>

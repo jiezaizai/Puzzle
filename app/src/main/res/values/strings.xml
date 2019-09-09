@@ -14,7 +14,7 @@
     <string name="back">返回</string>
     <string name="rank">名次</string>
     <string name="user_name">用户名</string>
-    <string name="score">时间</string>
+    <string name="score">时间(s)</string>
     <string name="list">排行榜</string>
     <string name="refresh_success">刷新成功</string>
     <string name="empty">没有数据</string>

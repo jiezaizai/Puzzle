@@ -387,7 +387,6 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
         lp1.topMargin = mFirst.getTop() - mPadding;
         firstImage.setLayoutParams(lp1);
         mAnimLayout.addView(firstImage);
-
         String secondTag = (String) mSecond.getTag();
         ImageView secondImage = new ImageView(getContext());
         final Bitmap secondBitmap = mItemsBitmaps.get(
