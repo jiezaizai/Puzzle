@@ -28,9 +28,47 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="#ffff00"/>
-        <!--app:tabMode="fixed"-->
-        <!--app:tabSelectedTextColor="#11ff00"-->
-        <!--app:tabTextColor="@android:color/black"/>-->
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/rank"
+                android:textSize="@dimen/sp_18" />
+
+            <TextView
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/user_name"
+                android:textSize="@dimen/sp_18" />
+
+            <TextView
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/score"
+                android:textSize="@dimen/sp_18" />
+        </TableRow>
+
+    </TableLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_3"
+        android:background="@color/colorAccent">
+
+    </View>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
